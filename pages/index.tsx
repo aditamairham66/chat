@@ -1,15 +1,23 @@
+import { Box } from '@chakra-ui/react';
 import type { NextPage, NextPageContext } from 'next'
-import { getSession, signIn, signOut, useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import Auth from '../components/Auth';
+import Chat from '../components/Chat';
 
 const Home: NextPage = () => {
-  const {data} = useSession();
-  console.log('test data', data)
+  const { data: session } = useSession();
+  console.log('test data', session)
+
+  const refreshSession = () => {}
 
   return (
-    <>
-      <button onClick={() => signIn('google')}>login</button>
-      <button onClick={() => signOut()}>logout</button>
-    </>
+    <Box>
+      { session && session?.user?.username ? (
+        <Chat/>
+      ) : (
+        <Auth session={session} refreshSession={refreshSession} />
+      )}
+    </Box>
   )
 }
 
