@@ -8,7 +8,10 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   console.log('test data', session)
 
-  const refreshSession = () => {}
+  const refreshSession = () => {
+    const event = new Event('visibleUsername')
+    document.dispatchEvent(event) 
+  }
 
   return (
     <Box>

@@ -9,6 +9,7 @@ yarn dev
 ```
 
 ## Stack Application
+- Node 18 >=
 - Next Auth 4
 - Prisma
-
+- Chakra
