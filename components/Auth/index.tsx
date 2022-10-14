@@ -62,7 +62,11 @@ const Auth:React.FC<Props> = ({
                         value={username} 
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                     />
-                    <Button width='100%' onClick={submitUsername}>Save</Button>
+                    <Button 
+                        width='100%' 
+                        onClick={submitUsername}
+                        isLoading={loading}
+                    >Save</Button>
                 </>
             ) : (
                 <>
