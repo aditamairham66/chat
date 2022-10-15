@@ -9,6 +9,7 @@ import ListUsers from './ListUsers';
 import SelectUsers from './SelectUsers';
 import { CreateConversationData, CreateConversationVariables } from '../../../../utils/conversationType';
 import { Session } from 'next-auth';
+import { useRouter } from 'next/router';
 
 interface Props {
     isOpen: boolean
@@ -36,6 +37,7 @@ const Modal:React.FC<Props> = ({
     CreateConversationData, 
     CreateConversationVariables
   >(conversationOperation.Mutation.createChat)
+  const route = useRouter()
 
   const searchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -61,11 +63,27 @@ const Modal:React.FC<Props> = ({
   const createConversation = async () => {
     const id = [usersID, ...selectUsers.map((row) => row.id)]
     try {
-        createChat({
+        const { data } = await createChat({
             variables: {
                 usersList: id
             }
         })
+
+        if (!data?.createConversation) {
+          throw new Error("Create Conversation is failed")
+        }
+
+        const {
+          createConversation: { conversationId }
+        } = data
+
+        route.push({
+          query: {conversationId}
+        })
+
+        setUsername("")
+        setSelectUsers([])
+        modalClose()
     } catch (error: any) {
         toast.error(error.message)
     }
