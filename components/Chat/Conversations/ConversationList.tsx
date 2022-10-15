@@ -1,13 +1,17 @@
 import { Box, Text } from '@chakra-ui/react'
 import { Session } from 'next-auth'
 import React, { useState } from 'react'
+import { Conversation, ConversationData } from '../../../utils/conversationType'
+import ConversationItem from './ConversationItem'
 import ConversationModal from './Modal/Modal'
 
 interface Props {
     session: Session
+    conversations: Conversation[]
 }
 const ConversationList:React.FC<Props> = ({
-    session
+    session,
+    conversations,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   
@@ -36,6 +40,13 @@ const ConversationList:React.FC<Props> = ({
         </Box>
 
         <ConversationModal isOpen={isOpen} modalClose={modalClose} session={session}/>
+
+        {conversations.map((row, i) => (
+            <ConversationItem 
+                key={i} 
+                chat={row} 
+            />
+        ))}
     </Box>
   )
 }

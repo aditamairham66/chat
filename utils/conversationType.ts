@@ -9,12 +9,18 @@ interface CreateConversationVariables {
 }
 
 interface ConversationData {
-    conversations: Conversation[]
+    conversations?: Conversation[]
 }
 
 interface Conversation {
-    conversationParticipant: User
-    lastMessage: User
+    id: string
+    conversationParticipant: Participant[]
+    lastMessage: User[]
+}
+
+interface Participant {
+    user: User[]
+    isRead: Boolean
 }
 
 interface User {
@@ -26,4 +32,5 @@ export type {
     CreateConversationData,
     CreateConversationVariables,
     ConversationData,
+    Conversation,
 }

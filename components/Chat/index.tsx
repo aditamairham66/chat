@@ -13,17 +13,6 @@ interface Props {
 const Chat:React.FC<Props> = ({
   session
 }) => {
-  const {
-    data: dataChat,
-    loading: loadingChat,
-    error: errorChat,
-  } = useQuery<
-    ConversationData, 
-    null
-  >(conversationOperation.Query.conversation)
-
-  console.log(dataChat)
-
   return (
     <Flex
       height='100vh'

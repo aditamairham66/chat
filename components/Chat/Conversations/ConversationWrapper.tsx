@@ -1,6 +1,9 @@
+import { useQuery } from '@apollo/client'
 import { Box } from '@chakra-ui/react'
 import { Session } from 'next-auth'
 import React from 'react'
+import conversationOperation from "../../../graphql/operations/conversation";
+import { Conversation, ConversationData } from '../../../utils/conversationType'
 import ConversationList from './ConversationList'
 
 interface Props {
@@ -9,6 +12,14 @@ interface Props {
 const ConversationWrapper:React.FC<Props> = ({
     session
 }) => {
+  const { 
+    data: dataChat, 
+    loading: loadingChat, 
+    error: errorChat 
+  } = useQuery<ConversationData, null>(conversationOperation.Query.conversation)
+  
+  console.log(dataChat)
+
   return (
     <Box 
         width={{
@@ -19,7 +30,7 @@ const ConversationWrapper:React.FC<Props> = ({
         py={6}
         px={3}
     >
-        <ConversationList session={session}/>
+        <ConversationList session={session} conversations={dataChat?.conversations as Conversation[] || []}/>
     </Box>
   )
 }
