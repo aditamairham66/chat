@@ -36,5 +36,30 @@ export default {
             }
         `
     },
-    Subscriptions: {},
+    Subscriptions: {
+        conversationCreate: gql`
+            subscription ConversationCreate {
+                conversationCreated {
+                    id
+                    conversationParticipant {
+                        user {
+                            id
+                            username
+                        }
+                        isRead
+                    }
+                    lastMessage {
+                        id
+                        sender {
+                            id
+                            username
+                        }
+                        body
+                        createdAt
+                    }
+                    updatedAt
+                }
+            }
+        `
+    },
 }

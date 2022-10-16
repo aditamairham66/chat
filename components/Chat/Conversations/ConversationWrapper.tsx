@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { Box } from '@chakra-ui/react'
 import { Session } from 'next-auth'
-import React from 'react'
+import React, { useEffect } from 'react'
 import conversationOperation from "../../../graphql/operations/conversation";
 import { Conversation, ConversationData } from '../../../utils/conversationType'
 import ConversationList from './ConversationList'
@@ -15,10 +15,43 @@ const ConversationWrapper:React.FC<Props> = ({
   const { 
     data: dataChat, 
     loading: loadingChat, 
-    error: errorChat 
+    error: errorChat ,
+    subscribeToMore
   } = useQuery<ConversationData, null>(conversationOperation.Query.conversation)
   
-  console.log(dataChat)
+  console.log('ini data chat', dataChat)
+
+  const subscribeNewChat = () => {
+    subscribeToMore({
+      document: conversationOperation.Subscriptions.conversationCreate,
+      updateQuery: (
+        prev, 
+        { subscriptionData }: { 
+          subscriptionData: {
+            data: {
+              conversationCreated: Conversation
+            }
+          }
+        }
+      ) => {
+        if (!subscriptionData.data) return prev
+
+        console.log('ini data subscribe', subscriptionData)
+
+        const newChat = subscriptionData.data.conversationCreated
+        return Object.assign({}, prev, {
+          conversations: [
+            newChat as Conversation,
+            ...prev.conversations,
+          ]
+        })
+      }
+    })
+  }
+
+  useEffect(() => {
+    subscribeNewChat()
+  }, [])
 
   return (
     <Box 

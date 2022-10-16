@@ -9,7 +9,7 @@ interface CreateConversationVariables {
 }
 
 interface ConversationData {
-    conversations?: Conversation[]
+    conversations: Conversation[]
 }
 
 interface Conversation {
