@@ -20,6 +20,9 @@ const ConversationWrapper:React.FC<Props> = ({
     subscribeToMore
   } = useQuery<ConversationData, null>(conversationOperation.Query.conversation)
   const route = useRouter()
+  const {
+    conversationId
+  } = route.query
 
   const clickChat = async (chatID: string) => {
 
@@ -62,6 +65,10 @@ const ConversationWrapper:React.FC<Props> = ({
 
   return (
     <Box 
+        display={{
+          base: conversationId ? "none" : "flex",
+          md: "flex"
+        }}
         width={{
             base: '100%',
             md: '400px',
