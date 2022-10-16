@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { Box } from '@chakra-ui/react'
 import { Session } from 'next-auth'
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import conversationOperation from "../../../graphql/operations/conversation";
 import { Conversation, ConversationData } from '../../../utils/conversationType'
@@ -18,8 +19,16 @@ const ConversationWrapper:React.FC<Props> = ({
     error: errorChat ,
     subscribeToMore
   } = useQuery<ConversationData, null>(conversationOperation.Query.conversation)
-  
-  console.log('ini data chat', dataChat)
+  const route = useRouter()
+
+  const clickChat = async (chatID: string) => {
+
+    route.push({
+      query: {
+        conversationId: chatID
+      }
+    })
+  }
 
   const subscribeNewChat = () => {
     subscribeToMore({
@@ -35,8 +44,6 @@ const ConversationWrapper:React.FC<Props> = ({
         }
       ) => {
         if (!subscriptionData.data) return prev
-
-        console.log('ini data subscribe', subscriptionData)
 
         const newChat = subscriptionData.data.conversationCreated
         return Object.assign({}, prev, {
@@ -63,7 +70,11 @@ const ConversationWrapper:React.FC<Props> = ({
         py={6}
         px={3}
     >
-        <ConversationList session={session} conversations={dataChat?.conversations as Conversation[] || []}/>
+        <ConversationList 
+          session={session} 
+          conversations={dataChat?.conversations as Conversation[] || []}
+          clickChat={clickChat}
+        />
     </Box>
   )
 }

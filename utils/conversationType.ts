@@ -15,11 +15,13 @@ interface ConversationData {
 interface Conversation {
     id: string
     conversationParticipant: Participant[]
-    lastMessage: User[]
+    lastMessage: Message
+    updatedAt: Date
+    createdAt: Date
 }
 
 interface Participant {
-    user: User[]
+    user: User
     isRead: Boolean
 }
 
@@ -28,9 +30,16 @@ interface User {
     username: string
 }
 
+interface Message {
+    id: string
+    body: string
+    sender: User
+}
+
 export type {
     CreateConversationData,
     CreateConversationVariables,
     ConversationData,
     Conversation,
+    Participant,
 }
